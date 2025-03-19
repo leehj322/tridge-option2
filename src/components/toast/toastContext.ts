@@ -5,7 +5,7 @@ type ToastContext = {
   showToastMessage: (
     message: string,
     position?: Toast["position"],
-    duration?: number,
+    duration?: number | null,
   ) => void;
 };
 

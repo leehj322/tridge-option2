@@ -10,7 +10,7 @@ export type Toast = {
   id: number;
   message: string;
   position?: ToastPosition;
-  duration?: number;
+  duration?: number | null;
 };
 
 interface ToastProps {
