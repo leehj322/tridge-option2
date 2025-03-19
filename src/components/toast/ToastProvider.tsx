@@ -5,6 +5,10 @@ import { ToastContainer, Toast } from "./ToastContainer";
 export default function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
+  const removeToast = (id: number) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id));
+  };
+
   /**
    * 토스트를 추가하는 함수입니다.
    *
@@ -26,7 +30,7 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
 
       // duration 후에 auto close 동작 실행
       setTimeout(() => {
-        setToasts((prev) => prev.filter((toast) => toast.id !== id));
+        removeToast(id);
       }, duration);
     },
     [],
@@ -35,7 +39,7 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={{ showToastMessage }}>
       {children}
-      <ToastContainer toasts={toasts} />
+      <ToastContainer toasts={toasts} removeToast={removeToast} />
     </ToastContext.Provider>
   );
 }

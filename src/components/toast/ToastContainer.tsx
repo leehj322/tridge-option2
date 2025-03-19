@@ -15,20 +15,23 @@ export type Toast = {
 
 interface ToastProps {
   toast: Toast;
+  removeToast: (id: number) => void;
 }
 
-function Toast({ toast }: ToastProps) {
+function Toast({ toast, removeToast }: ToastProps) {
   return (
     <div
       className={`rounded-lg bg-gray-950 px-4 py-2 text-sm text-white shadow-lg`}
     >
       {toast.message}
+      <button onClick={() => removeToast(toast.id)}>✖</button>
     </div>
   );
 }
 
 interface ToastContainerProps {
   toasts: Toast[];
+  removeToast: (id: number) => void;
 }
 
 const POSITION_CLASSES: Record<ToastPosition, string> = {
@@ -40,7 +43,7 @@ const POSITION_CLASSES: Record<ToastPosition, string> = {
   "bottom-left": "bottom-5 left-5",
 };
 
-export function ToastContainer({ toasts }: ToastContainerProps) {
+export function ToastContainer({ toasts, removeToast }: ToastContainerProps) {
   return (
     <>
       {Object.keys(POSITION_CLASSES).map((position) => {
@@ -53,7 +56,7 @@ export function ToastContainer({ toasts }: ToastContainerProps) {
             className={`fixed z-50 flex flex-col gap-2 ${POSITION_CLASSES[position as ToastPosition]}`}
           >
             {filteredToasts.map((toast) => (
-              <Toast key={toast.id} toast={toast} />
+              <Toast key={toast.id} toast={toast} removeToast={removeToast} />
             ))}
           </div>
         );
