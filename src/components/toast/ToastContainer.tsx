@@ -21,10 +21,18 @@ interface ToastProps {
 function Toast({ toast, removeToast }: ToastProps) {
   return (
     <div
-      className={`rounded-lg bg-gray-950 px-4 py-2 text-sm text-white shadow-lg`}
+      className={`flex w-95 items-center justify-between gap-2 bg-gray-950 p-5 text-white shadow-lg`}
     >
-      {toast.message}
-      <button onClick={() => removeToast(toast.id)}>✖</button>
+      <span>{toast.message}</span>
+      <button
+        className="shrink-0 self-start opacity-50 hover:cursor-pointer hover:opacity-70"
+        onClick={() => removeToast(toast.id)}
+      >
+        <img
+          src="/src/assets/icons/cross-white-small.svg"
+          alt="toast close icon"
+        />
+      </button>
     </div>
   );
 }
