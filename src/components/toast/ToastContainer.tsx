@@ -1,3 +1,5 @@
+import { useEffect, useState, useRef } from "react";
+
 type ToastPosition =
   | "top-right"
   | "top-left"
@@ -19,14 +21,65 @@ interface ToastProps {
 }
 
 function Toast({ toast, removeToast }: ToastProps) {
+  const timerRef = useRef<number | null>(null);
+  const [startAt, setStartAt] = useState<number>(Date.now());
+  const [remainingTime, setRemainingTime] = useState(
+    toast.duration as number | null, // showToastMessage에서 기본값을 제공하므로 undefined가 아님
+  );
+
+  // auto-close 타이머, 마운트 및 Mouse Leave (resume) 시에 실행
+  const startCloseTimer = () => {
+    if (remainingTime === null) return; // remainingTime can be 0
+
+    const closeTimer = setTimeout(() => {
+      removeToast(toast.id);
+    }, remainingTime);
+
+    timerRef.current = closeTimer;
+    setStartAt(Date.now());
+  };
+
+  // Mouse Enter 시 타이머 일시정지 (pause)
+  const pauseCloseTimer = () => {
+    if (remainingTime === null || !timerRef.current) return;
+
+    clearTimeout(timerRef.current);
+    timerRef.current = null;
+
+    const elapsedTime = Date.now() - startAt;
+    setRemainingTime((prev) => (prev as number) - elapsedTime);
+  };
+
+  // 닫기 버튼 누를 시 타이머 해제 후 토스트 제거
+  const handleCloseButtonClick = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    removeToast(toast.id);
+  };
+
+  // 최초 마운트 시 auto-close 타이머 시작, 언마운트시 타이머 해제
+  useEffect(() => {
+    startCloseTimer();
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+      timerRef.current = null;
+    };
+    // 마운트 이후 동작은 div의 onMouseLeave에서 실행하기 때문에 no deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div
+      onMouseEnter={pauseCloseTimer}
+      onMouseLeave={startCloseTimer}
       className={`flex w-95 items-center justify-between gap-2 bg-gray-950 p-5 text-white shadow-lg`}
     >
       <span>{toast.message}</span>
       <button
         className="shrink-0 self-start opacity-50 hover:cursor-pointer hover:opacity-70"
-        onClick={() => removeToast(toast.id)}
+        onClick={handleCloseButtonClick}
       >
         <img
           src="/src/assets/icons/cross-white-small.svg"
