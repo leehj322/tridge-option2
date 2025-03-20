@@ -45,7 +45,7 @@ function App() {
 | ---------- | ------------------------------------------------------------------------------------------------- | ------------------------------------ | ---------------- |
 | `message`  | `string`                                                                                          | 토스트에 표시할 텍스트               | 필수             |
 | `position` | `"top-right" \| "top-left" \| "top-center" \| "bottom-right" \| "bottom-left" \| "bottom-center"` | 토스트가 나타나는 위치               | `"bottom-right"` |
-| `duration` | `number`                                                                                          | 토스트가 자동으로 종료되는 시간 (ms) | `3000`           |
+| `duration` | `number \| null`                                                                                  | 토스트가 자동으로 종료되는 시간 (ms) | `3000`           |
 | `status`   | `"success" \| "warning" \| "error" \| "default"`                                                  | 토스트의 디자인                      | `"default"`      |
 
 4. `showToastMessage` 사용 예제
