@@ -87,7 +87,7 @@ function Toast({ toast, removeToast }: ToastProps) {
     <div
       onMouseEnter={pauseCloseTimer}
       onMouseLeave={startCloseTimer}
-      className={`relative flex w-95 items-center justify-between gap-2 ${STATUS_COLOR_CLASSES[toast.status ?? "default"]} p-5 text-white shadow-lg`}
+      className={`animate-toast-open relative flex w-95 items-center justify-between gap-2 ${STATUS_COLOR_CLASSES[toast.status ?? "default"]} p-5 text-white shadow-lg`}
     >
       <span>
         {toast.status === "success" && <span>✅ </span>}
@@ -157,7 +157,7 @@ export function ToastContainer({ toasts, removeToast }: ToastContainerProps) {
             {/* Clear all button (upper toast messages)*/}
             {showClearAllButton && !isTop && (
               <button
-                className="rounded border border-gray-400 bg-white px-3 py-1 text-gray-800 hover:cursor-pointer hover:bg-gray-200"
+                className="animate-toast-open rounded border border-gray-400 bg-white px-3 py-1 text-gray-800 hover:cursor-pointer hover:bg-gray-200"
                 onClick={() =>
                   filteredToasts.forEach((toast) => removeToast(toast.id))
                 }
@@ -174,7 +174,7 @@ export function ToastContainer({ toasts, removeToast }: ToastContainerProps) {
             {/* Clear all button (under toast messages)*/}
             {showClearAllButton && isTop && (
               <button
-                className="rounded border border-gray-400 bg-white px-3 py-1 text-gray-800 hover:cursor-pointer hover:bg-gray-200"
+                className="animate-toast-open rounded border border-gray-400 bg-white px-3 py-1 text-gray-800 hover:cursor-pointer hover:bg-gray-200"
                 onClick={() =>
                   filteredToasts.forEach((toast) => removeToast(toast.id))
                 }
