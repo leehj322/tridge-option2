@@ -26,6 +26,7 @@ function Toast({ toast, removeToast }: ToastProps) {
   const [remainingTime, setRemainingTime] = useState(
     toast.duration as number | null, // showToastMessage에서 기본값을 제공하므로 undefined가 아님
   );
+  const [isProgressing, setIsProgressing] = useState<boolean>(false);
 
   // auto-close 타이머, 마운트 및 Mouse Leave (resume) 시에 실행
   const startCloseTimer = () => {
@@ -37,11 +38,13 @@ function Toast({ toast, removeToast }: ToastProps) {
 
     timerRef.current = closeTimer;
     setStartAt(Date.now());
+    setIsProgressing(true);
   };
 
   // Mouse Enter 시 타이머 일시정지 (pause)
   const pauseCloseTimer = () => {
     if (remainingTime === null || !timerRef.current) return;
+    setIsProgressing(false);
 
     clearTimeout(timerRef.current);
     timerRef.current = null;
@@ -74,7 +77,7 @@ function Toast({ toast, removeToast }: ToastProps) {
     <div
       onMouseEnter={pauseCloseTimer}
       onMouseLeave={startCloseTimer}
-      className={`flex w-95 items-center justify-between gap-2 bg-gray-950 p-5 text-white shadow-lg`}
+      className={`relative flex w-95 items-center justify-between gap-2 bg-gray-950 p-5 text-white shadow-lg`}
     >
       <span>{toast.message}</span>
       <button
@@ -86,6 +89,19 @@ function Toast({ toast, removeToast }: ToastProps) {
           alt="toast close icon"
         />
       </button>
+
+      {/* Progress Bar */}
+      {toast.duration && (
+        <div className="absolute bottom-0 left-0 h-1 w-full overflow-hidden bg-gray-700">
+          <div
+            className="animate-progress h-full bg-green-500"
+            style={{
+              animationDuration: `${toast.duration}ms`,
+              animationPlayState: isProgressing ? "running" : "paused",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }
