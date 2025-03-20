@@ -6,6 +6,7 @@ type ToastContext = {
     message: string,
     position?: Toast["position"],
     duration?: number | null,
+    status?: Toast["status"],
   ) => void;
 };
 

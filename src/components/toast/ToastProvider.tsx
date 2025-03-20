@@ -20,10 +20,19 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
     message: string,
     position?: Toast["position"],
     duration?: number | null,
+    status?: Toast["status"],
   ) => void = useCallback(
-    (message, position = "bottom-right", duration = 3000) => {
+    (
+      message,
+      position = "bottom-right",
+      duration = 3000,
+      status = "default",
+    ) => {
       const id = Date.now(); // 과제 제한으로 라이브러리 없이 ID 생성 (uuid)
-      setToasts((prev) => [...prev, { id, message, duration, position }]);
+      setToasts((prev) => [
+        ...prev,
+        { id, message, duration, position, status },
+      ]);
     },
     [],
   );

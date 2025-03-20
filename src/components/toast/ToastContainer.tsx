@@ -8,17 +8,27 @@ type ToastPosition =
   | "bottom-left"
   | "bottom-center";
 
+type ToastStatus = "success" | "warning" | "error" | "default";
+
 export type Toast = {
   id: number;
   message: string;
   position?: ToastPosition;
   duration?: number | null;
+  status?: ToastStatus;
 };
 
 interface ToastProps {
   toast: Toast;
   removeToast: (id: number) => void;
 }
+
+const STATUS_COLOR_CLASSES: Record<ToastStatus, string> = {
+  success: "bg-green-600",
+  warning: "bg-yellow-600",
+  error: "bg-red-700",
+  default: "bg-gray-950",
+};
 
 function Toast({ toast, removeToast }: ToastProps) {
   const timerRef = useRef<number | null>(null);
@@ -77,9 +87,14 @@ function Toast({ toast, removeToast }: ToastProps) {
     <div
       onMouseEnter={pauseCloseTimer}
       onMouseLeave={startCloseTimer}
-      className={`relative flex w-95 items-center justify-between gap-2 bg-gray-950 p-5 text-white shadow-lg`}
+      className={`relative flex w-95 items-center justify-between gap-2 ${STATUS_COLOR_CLASSES[toast.status ?? "default"]} p-5 text-white shadow-lg`}
     >
-      <span>{toast.message}</span>
+      <span>
+        {toast.status === "success" && <span>✅ </span>}
+        {toast.status === "warning" && <span>⚠️ </span>}
+        {toast.status === "error" && <span>❗ </span>}
+        {toast.message}
+      </span>
       <button
         className="shrink-0 self-start opacity-50 hover:cursor-pointer hover:opacity-70"
         onClick={handleCloseButtonClick}
@@ -94,7 +109,7 @@ function Toast({ toast, removeToast }: ToastProps) {
       {toast.duration && (
         <div className="absolute bottom-0 left-0 h-1 w-full overflow-hidden bg-gray-700">
           <div
-            className="animate-progress h-full bg-green-500"
+            className={`animate-progress h-full bg-green-500`}
             style={{
               animationDuration: `${toast.duration}ms`,
               animationPlayState: isProgressing ? "running" : "paused",
