@@ -1,6 +1,6 @@
 import { useState, useCallback, ReactNode } from "react";
 import { ToastContext } from "./toastContext";
-import { ToastContainer, Toast } from "./ToastContainer";
+import { ToastContainer, Toast } from "./ToastUI";
 
 export default function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
