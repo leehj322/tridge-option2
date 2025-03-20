@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { Toast } from "./ToastContainer";
+import { Toast } from "./ToastUI";
 
 type ToastContext = {
   showToastMessage: (
