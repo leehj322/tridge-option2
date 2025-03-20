@@ -127,14 +127,46 @@ export function ToastContainer({ toasts, removeToast }: ToastContainerProps) {
         const filteredToasts = toasts.filter(
           (toast) => toast.position === position,
         );
+
+        // 내부에 Toast가 없으면 Container 생성 X
+        if (filteredToasts.length === 0) return null;
+
+        const isTop = position.startsWith("top");
+        const showClearAllButton = filteredToasts.length > 1;
+
         return (
           <div
             key={position}
             className={`fixed z-50 flex flex-col gap-2 ${POSITION_CLASSES[position as ToastPosition]}`}
           >
+            {/* Clear all button (upper toast messages)*/}
+            {showClearAllButton && !isTop && (
+              <button
+                className="rounded bg-gray-700 px-3 py-1 text-white hover:cursor-pointer hover:bg-gray-800"
+                onClick={() =>
+                  filteredToasts.forEach((toast) => removeToast(toast.id))
+                }
+              >
+                Clear All
+              </button>
+            )}
+
+            {/* Toast messages */}
             {filteredToasts.map((toast) => (
               <Toast key={toast.id} toast={toast} removeToast={removeToast} />
             ))}
+
+            {/* Clear all button (under toast messages)*/}
+            {showClearAllButton && isTop && (
+              <button
+                className="rounded bg-gray-700 px-3 py-1 text-white hover:cursor-pointer hover:bg-gray-800"
+                onClick={() =>
+                  filteredToasts.forEach((toast) => removeToast(toast.id))
+                }
+              >
+                Clear All
+              </button>
+            )}
           </div>
         );
       })}
