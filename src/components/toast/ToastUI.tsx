@@ -157,7 +157,7 @@ export function ToastContainer({ toasts, removeToast }: ToastContainerProps) {
             {/* Clear all button (upper toast messages)*/}
             {showClearAllButton && !isTop && (
               <button
-                className="rounded bg-gray-700 px-3 py-1 text-white hover:cursor-pointer hover:bg-gray-800"
+                className="rounded border border-gray-400 bg-white px-3 py-1 text-gray-800 hover:cursor-pointer hover:bg-gray-200"
                 onClick={() =>
                   filteredToasts.forEach((toast) => removeToast(toast.id))
                 }
@@ -174,7 +174,7 @@ export function ToastContainer({ toasts, removeToast }: ToastContainerProps) {
             {/* Clear all button (under toast messages)*/}
             {showClearAllButton && isTop && (
               <button
-                className="rounded bg-gray-700 px-3 py-1 text-white hover:cursor-pointer hover:bg-gray-800"
+                className="rounded border border-gray-400 bg-white px-3 py-1 text-gray-800 hover:cursor-pointer hover:bg-gray-200"
                 onClick={() =>
                   filteredToasts.forEach((toast) => removeToast(toast.id))
                 }
