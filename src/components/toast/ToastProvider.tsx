@@ -29,6 +29,14 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
       status = "default",
     ) => {
       const id = Date.now(); // 과제 제한으로 라이브러리 없이 ID 생성 (uuid)
+
+      if (message.trim() === "") {
+        throw new Error("message는 빈 문자열일 수 없습니다.");
+      }
+      if (duration !== null && duration <= 0) {
+        throw new Error("autoClose delay는 0보다 큰 수 이어야 합니다.");
+      }
+
       setToasts((prev) => [
         ...prev,
         { id, message, duration, position, status },
