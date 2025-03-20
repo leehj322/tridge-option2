@@ -24,14 +24,6 @@ export default function ToastProvider({ children }: { children: ReactNode }) {
     (message, position = "bottom-right", duration = 3000) => {
       const id = Date.now(); // 과제 제한으로 라이브러리 없이 ID 생성 (uuid)
       setToasts((prev) => [...prev, { id, message, duration, position }]);
-
-      // duration이 null인 경우 toast 제거 동작 하지 않고 early return
-      if (duration === null) return;
-
-      // duration 후에 auto close 동작 실행
-      setTimeout(() => {
-        removeToast(id);
-      }, duration);
     },
     [],
   );
